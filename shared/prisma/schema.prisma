@@ -1,0 +1,88 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String  @id @default(uuid())
+  name     String
+  password String
+  orders    Order[]
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  price       Float
+  sku         String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  orders       Order[]
+  inventory    Inventory?
+  OrderProduct OrderProduct[]
+
+  @@map("products")
+}
+
+model Order {
+  id          String      @id @default(uuid())
+  orderNumber String      @unique
+  orderDate   DateTime    @default(now())
+  totalAmount Float
+  status      OrderStatus
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  products  OrderProduct[]
+  User      User?          @relation(fields: [userId], references: [id])
+  userId    String?
+  Product   Product?       @relation(fields: [productId], references: [id])
+  productId String?
+
+  @@map("orders")
+}
+
+// Inventory model
+model Inventory {
+  id        String   @id @default(uuid())
+  sku       String   @unique
+  quantity  Int
+  reserved  Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  product Product @relation(fields: [sku], references: [sku])
+
+  @@map("inventory")
+}
+
+model OrderProduct {
+  orderId   String // Foreign key to Order
+  productId String // Foreign key to Product
+  quantity  Int // Quantity of the product in the order
+
+  order   Order   @relation(fields: [orderId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+
+  @@id([orderId, productId])
+  @@map("order_products")
+}
+
+enum OrderStatus {
+  PENDING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
