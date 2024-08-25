@@ -23,52 +23,52 @@ services:
     environment:
       - POSTGRES_USER=test
       - POSTGRES_PASSWORD=test
-      - POSTGRES_DB=postgres
-  users:
-    container_name: users
-    build:
-      context: .
-      dockerfile: ./users/Dockerfile
-    ports:
-      - 3003:3003
-    volumes:
-      - ./users:/usr/src/users
-      - ../shared/src:/usr/src/shared/src
-      - ../shared/prisma:/usr/src/shared/prisma
-    depends_on:
-      - postgres
-  order:
-    container_name: order
-    build:
-      context: .
-      dockerfile: ./order/Dockerfile
-    ports:
-      - 3001:3001
-    volumes:
-      - ./order:/usr/src/order
-      - ../shared/src:/usr/src/shared/src
-      - ../shared/prisma:/usr/src/shared/prisma
-    environment:
-      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
-      - KAFKA_TOPIC=orderplaced
-    depends_on:
-      - postgres
-      - kafka
-  inventory:
-    container_name: inventory
-    build:
-      context: .
-      dockerfile: ./inventory/Dockerfile
-    ports:
-      - 3002:3002
-    volumes:
-      - ./inventory:/usr/src/inventory
-      - ../shared/src:/usr/src/shared/src
-      - ../shared/prisma:/usr/src/shared/prisma
-    environment:
-      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
-      - KAFKA_TOPIC=orderplaced
-      - KAFKA_TOPIC_PRODUCT=productadded
-    depends_on:
-      - postgres
-      - kafka
+      - POSTGRES_DB=microservice
+  # users:
+  #   container_name: users
+  #   build:
+  #     context: .
+  #     dockerfile: ./users/Dockerfile
+  #   ports:
+  #     - 3003:3003
+  #   volumes:
+  #     - ./users:/usr/src/users
+  #     - ../shared/src:/usr/src/shared/src
+  #     - ../shared/prisma:/usr/src/shared/prisma
+  #   depends_on:
+  #     - postgres
+  # order:
+  #   container_name: order
+  #   build:
+  #     context: .
+  #     dockerfile: ./order/Dockerfile
+  #   ports:
+  #     - 3001:3001
+  #   volumes:
+  #     - ./order:/usr/src/order
+  #     - ../shared/src:/usr/src/shared/src
+  #     - ../shared/prisma:/usr/src/shared/prisma
+  #   environment:
+  #     - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+  #     - KAFKA_TOPIC=orderplaced
+  #   depends_on:
+  #     - postgres
+  #     - kafka
+  # inventory:
+  #   container_name: inventory
+  #   build:
+  #     context: .
+  #     dockerfile: ./inventory/Dockerfile
+  #   ports:
+  #     - 3002:3002
+  #   volumes:
+  #     - ./inventory:/usr/src/inventory
+  #     - ../shared/src:/usr/src/shared/src
+  #     - ../shared/prisma:/usr/src/shared/prisma
+  #   environment:
+  #     - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+  #     - KAFKA_TOPIC=orderplaced
+  #     - KAFKA_TOPIC_PRODUCT=productadded
+  #   depends_on:
+  #     - postgres
+  #     - kafka
