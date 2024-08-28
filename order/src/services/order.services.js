@@ -5,7 +5,9 @@ export const getAllOrdersFromDb=async()=>{
 }
 
 export const addOrderToDb=async(order)=>{
-    return await db.order.create(order)
+    return await db.order.create({
+        data:order
+    })
 }
 
 export const getOrderByIdFromDb=async(id)=>{

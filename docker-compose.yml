@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 services:
   zookeeper:
     image: wurstmeister/zookeeper
@@ -11,8 +11,9 @@ services:
     volumes:
       - ./data/kafka:/var/run/docker.sock
     environment:
-      - KAFKA_ADVERTISED_HOST_NAME=kafka
+      - KAFKA_ADVERTISED_HOST_NAME=localhost
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_BROKER_ID=1
   postgres:
     container_name: postgres
     image: postgres
@@ -24,19 +25,20 @@ services:
       - POSTGRES_USER=test
       - POSTGRES_PASSWORD=test
       - POSTGRES_DB=microservice
-  # users:
-  #   container_name: users
-  #   build:
-  #     context: .
-  #     dockerfile: ./users/Dockerfile
-  #   ports:
-  #     - 3003:3003
-  #   volumes:
-  #     - ./users:/usr/src/users
-  #     - ../shared/src:/usr/src/shared/src
-  #     - ../shared/prisma:/usr/src/shared/prisma
-  #   depends_on:
-  #     - postgres
+  users:
+    container_name: users
+    build:
+      context: .
+      dockerfile: ./users/Dockerfile
+    ports:
+      - 3003:3003
+    volumes:
+      - ./users:/usr/src/users
+      - ../shared/src:/usr/src/shared/src
+      - ../shared/prisma:/usr/src/shared/prisma
+    depends_on:
+      - postgres
+    network_mode: "host"
   # order:
   #   container_name: order
   #   build:

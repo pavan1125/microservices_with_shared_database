@@ -51,7 +51,6 @@ model Order {
   Product   Product?       @relation(fields: [productId], references: [id])
   productId String?
 
-  @@map("orders")
 }
 
 // Inventory model

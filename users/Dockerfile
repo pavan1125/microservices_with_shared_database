@@ -20,5 +20,4 @@ RUN npx prisma generate --schema=./shared/prisma/schema.prisma
 
 EXPOSE 3003
 
-
 CMD ["node", "src/index.js"]
