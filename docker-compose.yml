@@ -21,24 +21,26 @@ services:
       - 5432:5432
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
+    depends_on:
+      - zookeeper
     environment:
       - POSTGRES_USER=test
       - POSTGRES_PASSWORD=test
       - POSTGRES_DB=microservice
-  users:
-    container_name: users
-    build:
-      context: .
-      dockerfile: ./users/Dockerfile
-    ports:
-      - 3003:3003
-    volumes:
-      - ./users:/usr/src/users
-      - ../shared/src:/usr/src/shared/src
-      - ../shared/prisma:/usr/src/shared/prisma
-    depends_on:
-      - postgres
-    network_mode: "host"
+  # users:
+  #   container_name: users
+  #   build:
+  #     context: .
+  #     dockerfile: ./users/Dockerfile
+  #   ports:
+  #     - 3003:3003
+  #   volumes:
+  #     - ./users:/usr/src/users
+  #     - ../shared/src:/usr/src/shared/src
+  #     - ../shared/prisma:/usr/src/shared/prisma
+  #   depends_on:
+  #     - postgres
+  #   network_mode: "host"
   # order:
   #   container_name: order
   #   build:

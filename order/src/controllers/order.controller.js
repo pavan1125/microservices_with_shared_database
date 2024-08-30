@@ -1,6 +1,8 @@
 import {
   addOrderToDb,
   getAllOrdersFromDb,
+  getOrderByIdFromDb,
+  updateOrderStatusOnDb,
 } from "../services/order.services.js";
 
 export const getAllOrders = async () => {
@@ -11,4 +13,8 @@ export const addOrder = async (order) => {
 };
 export const getOrderById = async (id) => {
   return await getOrderByIdFromDb(id);
+};
+
+export const updateOrderStatus = async (id, status) => {
+  return await updateOrderStatusOnDb(id, status);
 };
